@@ -1,0 +1,144 @@
+
+/* FAQ Styles */
+.faq-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+
+  .faq-content {
+    padding-top: 120px;
+    padding-bottom: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .faq-wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+
+      h1 {
+        text-align: center;
+        font-size: 48px;
+        margin-bottom: 40px;
+        color: #333;
+      }
+
+      .accordion {
+        .accordion-item {
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          margin-bottom: 10px;
+          overflow: hidden;
+
+          .accordion-header {
+            .accordion-button {
+              background: #f8f9fa;
+              font-weight: bold;
+              border: none;
+              padding: 20px;
+              transition: all 0.3s ease;
+
+              &:not(.collapsed) {
+                background: #e9ecef;
+                box-shadow: none;
+              }
+
+              &:focus {
+                box-shadow: 0 0 0 0.25rem rgba(0, 80, 255, 0.25);
+                border-color: #0050ff;
+              }
+
+              &:hover {
+                background: #e9ecef;
+              }
+            }
+          }
+
+          .accordion-collapse {
+            .accordion-body {
+              color: #555;
+              font-size: 15px;
+              line-height: 1.6;
+              padding: 20px;
+              background: white;
+            }
+          }
+        }
+      }
+
+      .faq-support {
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+
+        h3 {
+          color: #333;
+          margin-bottom: 10px;
+          font-size: 1.5rem;
+        }
+
+        p {
+          color: #666;
+          margin-bottom: 20px;
+          font-size: 1rem;
+        }
+
+        a {
+          background: #0050ff;
+          color: white;
+          padding: 12px 30px;
+          border-radius: 25px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          display: inline-block;
+
+          &:hover {
+            background: #0040cc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 80, 255, 0.3);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .faq-container {
+    .faq-content {
+      padding-top: 140px;
+
+      .faq-wrapper {
+        padding: 30px 20px;
+
+        h1 {
+          font-size: 36px;
+        }
+
+        .accordion {
+          .accordion-item {
+            .accordion-header {
+              .accordion-button {
+                padding: 15px;
+                font-size: 14px;
+              }
+            }
+
+            .accordion-collapse {
+              .accordion-body {
+                padding: 15px;
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
