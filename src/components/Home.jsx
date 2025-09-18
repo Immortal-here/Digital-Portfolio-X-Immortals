@@ -24,7 +24,7 @@ const Home = () => {
                 <ul className="hero-features">
                   <li>Unleash your creative potential with DigiPratibha</li>
                   <li>Showcase your Professional Portfolio's online to not only create impact but to achieve Success </li>
-                  <li>Perfect Students, Buisness Professionals, Artists, Photographers and Creatives</li>
+                  <li>Perfect for Students, Buisness Professionals, Artists, Photographers and Creatives</li>
                 </ul>
 
                 <div className="hero-actions">
