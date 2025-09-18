@@ -1,0 +1,186 @@
+/* LearnMore.scss */
+.learnmore-page {
+  .lm-hero {
+    padding: 56px 0;
+    text-align: center;
+
+    .lm-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .lm-subtitle {
+      font-size: 1.05rem;
+      opacity: 0.95;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  }
+
+  .lm-steps {
+    margin-top: 36px;
+    margin-bottom: 24px;
+    display: block;
+    max-width: 1100px;
+    padding: 0 16px;
+  }
+
+  .lm-step-card {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 20px rgba(13, 30, 56, 0.06);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 36px rgba(13, 30, 56, 0.12);
+    }
+
+    .lm-step-left {
+      .lm-step-number {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: white;
+        font-size: 1.25rem;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      }
+    }
+
+    .lm-step-right {
+      flex: 1;
+
+      .lm-step-title {
+        font-size: 1.25rem;
+        margin: 0 0 6px 0;
+        color: #222;
+      }
+
+      .lm-step-summary {
+        margin: 0 0 10px 0;
+        color: #444;
+      }
+
+      .lm-step-detail {
+        margin: 0 0 10px 0;
+        color: #555;
+      }
+
+      .lm-checklist {
+        margin: 8px 0 0 20px;
+        li {
+          margin-bottom: 6px;
+          color: #444;
+        }
+      }
+    }
+  }
+
+  .lm-extras {
+    max-width: 1100px;
+    padding: 8px 16px 48px;
+    margin: 24px auto;
+
+    .lm-extra {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 18px rgba(13, 30, 56, 0.06);
+
+      h3 {
+        margin-top: 0;
+        color: #222;
+      }
+
+      p {
+        color: #444;
+      }
+
+      ul {
+        margin-top: 8px;
+        margin-left: 18px;
+        color: #444;
+        li {
+          margin-bottom: 6px;
+        }
+      }
+    }
+  }
+
+  .lm-cta {
+    text-align: center;
+    padding: 32px 16px 56px;
+
+    .cta-row {
+      display: inline-flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    /* reuse btn-primary / btn-back-home classes from your styles */
+    .btn-primary {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(37, 117, 252, 0.18);
+    }
+
+    /* BUTTON: Back to Home (outline -> gradient on hover + glow) */
+    .btn-back-home {
+      background: transparent;
+      color: #e7e3eb;
+      border: 2px solid #e7e3eb;
+      padding: 12px 26px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.28s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-back-home:hover {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 0 14px rgba(106, 17, 203, 0.45), 0 0 28px rgba(37, 117, 252, 0.28);
+    }
+
+    .btn-back-home:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+/* small screens */
+@media (max-width: 768px) {
+  .learnmore-page {
+    .lm-step-card {
+      flex-direction: row;
+      .lm-step-left {
+        margin-right: 12px;
+      }
+    }
+  }
+}

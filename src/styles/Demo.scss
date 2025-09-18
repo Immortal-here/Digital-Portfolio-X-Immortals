@@ -1,0 +1,40 @@
+/* Back to Home Button - styled for purple background */
+.btn-back-home {
+  background: transparent; 
+  color: #e7e3eb; /* white text */
+  border: 2px solid #e7e3eb; /* white border */
+  padding: 14px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+  animation: fadeInUp 0.8s ease both;
+
+  &:hover {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* gradient fill */
+    color: white; /* text flips to white */
+    transform: translateY(-2px); /* lift */
+    box-shadow: 0 0 12px rgba(106, 17, 203, 0.6), 
+                0 0 24px rgba(37, 117, 252, 0.4); /* ✨ purple glow */
+  }
+
+  &:active {
+    transform: scale(0.97); /* click feedback */
+    box-shadow: 0 0 8px rgba(106, 17, 203, 0.4); /* softer glow on click */
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
