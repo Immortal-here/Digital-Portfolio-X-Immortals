@@ -87,17 +87,18 @@ const About = () => {
             Join thousands of creators and professionals already using DigiPratibha.
           </p>
           <div className="d-flex justify-content-center gap-3 flex-wrap">
-            <button
-              className="btn-gradient"
-              onClick={() => navigate("/signup")}
-            >
-              Get Started →
-            </button>
+            {/* Swapped button order */}
             <button
               className="btn-back-home"
               onClick={() => navigate("/")}
             >
               ← Back to Home
+            </button>
+            <button
+              className="btn-gradient"
+              onClick={() => navigate("/signup")}
+            >
+              Get Started →
             </button>
           </div>
         </div>
