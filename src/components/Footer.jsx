@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // 👈 Import Link for routing
 
 const Footer = () => {
   return (
@@ -7,35 +8,13 @@ const Footer = () => {
         <div className="text-center mb-4">
           <h1 className="mb-2">DigiPratibha</h1>
           <p className="mx-auto" style={{ maxWidth: "800px" }}>
-            The DigiPratibha website builder offers a complete solution from
-            enterprise-grade infrastructure and business features to advanced
-            SEO and marketing tools—enabling anyone to create and grow online.
+            DigiPratibha is an online portfolio builder that offers a complete solution from
+            time-consuming portfolio making to effortless resumes in just a few minutes.
           </p>
         </div>
 
-        <div className="row text-center text-md-start gy-4">
-          <div className="col-6 col-md-2">
-            
-          </div>
-
-          <div className="col-6 col-md-2">
-         
-          </div>
-
-          <div className="col-6 col-md-2">
-            
-          </div>
-
-          <div className="col-6 col-md-2">
-           
-          </div>
-
-          <div className="col-12 col-md-4">
-            
-          </div>
-        </div>
-
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4 mt-4 text-center text-md-start">
+          {/* Social Links */}
           <div className="mb-3 mb-md-0">
             <a href="https://facebook.com" className="text-dark me-3">
               <i className="fab fa-facebook"></i>
@@ -45,9 +24,6 @@ const Footer = () => {
             </a>
             <a href="https://instagram.com" className="text-dark me-3">
               <i className="fab fa-instagram"></i>
-            </a>
-            <a href="https://tiktok.com" className="text-dark me-3">
-              <i className="fab fa-tiktok"></i>
             </a>
             <a href="https://pinterest.com" className="text-dark me-3">
               <i className="fab fa-pinterest"></i>
@@ -60,19 +36,25 @@ const Footer = () => {
             </a>
           </div>
 
+          {/* Policies */}
           <div className="mb-3 mb-md-0">
-            <span className="me-3">Terms of Use</span>
-            <span className="me-3">Privacy Policy</span>
-            <span>© 2006–2025 DigiPratibha.com, Inc</span>
+            <Link to="/terms" className="me-3 text-dark">
+              Terms of Use
+            </Link>
+            <Link to="/privacy" className="me-3 text-dark">
+              Privacy Policy
+            </Link>
+            <span>© DigiPratibha.com, Inc</span>
           </div>
 
+          {/* Navigation Links */}
           <div>
-            <a href="#" className="text-dark me-3">
-              About
-            </a>
-            <a href="#" className="text-dark">
-              Contact us
-            </a>
+            <Link to="/about" className="text-dark me-3">
+              About Us
+            </Link>
+            <Link to="/contact" className="text-dark">
+              Contact Us
+            </Link>
           </div>
         </div>
       </div>
