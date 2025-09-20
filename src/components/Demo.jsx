@@ -16,7 +16,7 @@ const Demo = () => {
     {
       number: 2,
       title: "Choose a Template",
-      description: "Pick from a wide range of professional and creative templates tailored for portfolios.",
+      description: "Pick from a wide range of professional and creative templates tailored for making portfolios.",
     },
     {
       number: 3,
