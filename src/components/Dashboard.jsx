@@ -1,113 +1,119 @@
-import jsPDF from "jspdf"; // run: npm install jspdf
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PortfolioBuilder from './PortfolioBuilder';
-import '../styles/Dashboard.scss';
+// src/components/Dashboard.jsx
+import jsPDF from "jspdf";
+import React, { useState, useEffect } from "react";
+import PortfolioBuilder from "./PortfolioBuilder";
+import "../styles/Dashboard.scss";
 
 // Firebase
-import { auth, db } from '../firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from "../firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+
+// Auth
+import { useAuth } from "../context/AuthContext";
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth(); // <- from AuthContext
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('profile');
-  const [skillInput, setSkillInput] = useState('');
+  const [activeTab, setActiveTab] = useState("profile");
+  const [skillInput, setSkillInput] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
   const [profileData, setProfileData] = useState({
-    fullName: '',
-    bio: '',
-    phone: '',
-    email: '',
-    location: '',
-    website: '',
-    github: '',
-    linkedin: '',
-    twitter: '',
-    avatar: ''
+    fullName: "",
+    bio: "",
+    phone: "",
+    email: "",
+    location: "",
+    website: "",
+    github: "",
+    linkedin: "",
+    twitter: "",
+    avatar: "",
   });
 
   const [projects, setProjects] = useState([]);
   const [education, setEducation] = useState([]);
   const [experience, setExperience] = useState([]);
   const [portfolioSettings, setPortfolioSettings] = useState({
-    theme: 'modern',
-    primaryColor: '#0050ff',
-    isPublic: true
+    theme: "modern",
+    primaryColor: "#0050ff",
+    isPublic: true,
   });
 
-  // Load user and portfolio from Firestore
+  // 🔄 Load portfolio from Firestore once Auth is ready
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-
-    if (!token || !userData) {
-      navigate('/login');
-      return;
-    }
-
-    try {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-
-      const fetchData = async () => {
-        const ref = doc(db, 'portfolios', parsedUser.id || parsedUser.uid);
+    const load = async () => {
+      if (!user) return; // PrivateRoute guarantees a user, but guard just in case
+      try {
+        const uid = user.uid;
+        const ref = doc(db, "portfolios", uid);
         const snap = await getDoc(ref);
+
         if (snap.exists()) {
           const data = snap.data();
-          setProfileData(data.profileData || {});
+          setProfileData({
+            ...profileData,
+            ...(data.profileData || {}),
+            // ensure email/name at least from auth
+            email: (data.profileData?.email || user.email) ?? "",
+            fullName:
+              data.profileData?.fullName ||
+              user.displayName ||
+              (user.email ? user.email.split("@")[0] : ""),
+          });
           setProjects(data.projects || []);
           setEducation(data.education || []);
           setExperience(data.experience || []);
           setPortfolioSettings(data.portfolioSettings || portfolioSettings);
         } else {
-          setProfileData(prev => ({
+          setProfileData((prev) => ({
             ...prev,
-            fullName: parsedUser.name || '',
-            email: parsedUser.email || ''
+            fullName:
+              user.displayName || (user.email ? user.email.split("@")[0] : ""),
+            email: user.email || "",
           }));
         }
+      } catch (e) {
+        console.error("Error loading portfolio:", e);
+      } finally {
         setLoading(false);
-      };
+      }
+    };
 
-      fetchData();
-    } catch (error) {
-      console.error('Error parsing user data:', error);
-      navigate('/login');
-    }
-  }, [navigate]);
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleLogout = async () => {
     try {
-      await auth.signOut();
+      await logout(); // <- via AuthContext
     } catch (err) {
-      console.error('Sign out error:', err);
+      console.error("Sign out error:", err);
     }
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
   };
 
   const savePortfolio = async () => {
     if (!user) return;
     setSaveLoading(true);
     try {
-      const ref = doc(db, 'portfolios', user.id || user.uid);
-      await setDoc(ref, {
-        profileData,
-        projects,
-        education,
-        experience,
-        portfolioSettings,
-      }, { merge: true });
-      alert('Portfolio saved successfully!');
+      const ref = doc(db, "portfolios", user.uid);
+      await setDoc(
+        ref,
+        {
+          profileData,
+          projects,
+          education,
+          experience,
+          portfolioSettings,
+        },
+        { merge: true }
+      );
+      alert("Portfolio saved successfully!");
     } catch (err) {
-      console.error('Error saving portfolio:', err);
-      alert('Failed to save portfolio');
+      console.error("Error saving portfolio:", err);
+      alert("Failed to save portfolio");
     } finally {
       setSaveLoading(false);
     }
@@ -122,69 +128,106 @@ const Dashboard = () => {
     if (skillInput.trim() && !profileData.skills?.includes(skillInput.trim())) {
       const updatedSkills = [...(profileData.skills || []), skillInput.trim()];
       setProfileData({ ...profileData, skills: updatedSkills });
-      setSkillInput('');
+      setSkillInput("");
     }
   };
 
   const removeSkill = (skillToRemove) => {
-    const updatedSkills = profileData.skills?.filter(skill => skill !== skillToRemove) || [];
+    const updatedSkills =
+      profileData.skills?.filter((skill) => skill !== skillToRemove) || [];
     setProfileData({ ...profileData, skills: updatedSkills });
   };
+
+  const initialProject = {
+    title: "",
+    description: "",
+    technologies: "",
+    liveUrl: "",
+    githubUrl: "",
+    image: "",
+    featured: false,
+  };
+  const [newProject, setNewProject] = useState(initialProject);
 
   const addProject = () => {
     if (!newProject.title || !newProject.description) return;
     const projectData = {
       ...newProject,
       id: Date.now(),
-      technologies: newProject.technologies.split(',').map(tech => tech.trim()),
-      createdAt: new Date().toISOString()
+      technologies: newProject.technologies
+        .split(",")
+        .map((tech) => tech.trim())
+        .filter(Boolean),
+      createdAt: new Date().toISOString(),
     };
-    setProjects([...projects, projectData]);
+    setProjects((prev) => [...prev, projectData]);
     setNewProject(initialProject);
     savePortfolio();
   };
 
   const removeProject = (id) => {
-    setProjects(projects.filter(p => p.id !== id));
+    setProjects((prev) => prev.filter((p) => p.id !== id));
     savePortfolio();
   };
 
-  const initialProject = { title: '', description: '', technologies: '', liveUrl: '', githubUrl: '', image: '', featured: false };
-  const [newProject, setNewProject] = useState(initialProject);
+  const initialEducation = {
+    institution: "",
+    degree: "",
+    field: "",
+    startDate: "",
+    endDate: "",
+    current: false,
+  };
+  const [newEducation, setNewEducation] = useState(initialEducation);
 
   const addEducation = () => {
     if (!newEducation.institution || !newEducation.degree) return;
     const educationData = { ...newEducation, id: Date.now() };
-    setEducation([...education, educationData]);
+    setEducation((prev) => [...prev, educationData]);
     setNewEducation(initialEducation);
     savePortfolio();
   };
 
   const removeEducation = (id) => {
-    setEducation(education.filter(e => e.id !== id));
+    setEducation((prev) => prev.filter((e) => e.id !== id));
     savePortfolio();
   };
 
-  const initialEducation = { institution: '', degree: '', field: '', startDate: '', endDate: '', current: false };
-  const [newEducation, setNewEducation] = useState(initialEducation);
+  const initialExperience = {
+    company: "",
+    position: "",
+    startDate: "",
+    endDate: "",
+    current: false,
+    description: "",
+  };
+  const [newExperience, setNewExperience] = useState(initialExperience);
 
   const addExperience = () => {
     if (!newExperience.company || !newExperience.position) return;
     const expData = { ...newExperience, id: Date.now() };
-    setExperience([...experience, expData]);
+    setExperience((prev) => [...prev, expData]);
     setNewExperience(initialExperience);
     savePortfolio();
   };
 
   const removeExperience = (id) => {
-    setExperience(experience.filter(e => e.id !== id));
+    setExperience((prev) => prev.filter((e) => e.id !== id));
     savePortfolio();
   };
 
-  // ✅ Export as JSON
+  // Exports
   const exportJSON = () => {
-    const data = { profileData, projects, education, experience, portfolioSettings };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const data = {
+      profileData,
+      projects,
+      education,
+      experience,
+      portfolioSettings,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -193,7 +236,6 @@ const Dashboard = () => {
     URL.revokeObjectURL(url);
   };
 
-  // ✅ Export as HTML
   const exportHTML = () => {
     const htmlContent = `
       <html>
@@ -203,15 +245,23 @@ const Dashboard = () => {
           <p>${profileData.bio}</p>
           <h2>Projects</h2>
           <ul>
-            ${projects.map(p => `<li><strong>${p.title}</strong>: ${p.description}</li>`).join('')}
+            ${projects
+              .map(
+                (p) => `<li><strong>${p.title}</strong>: ${p.description}</li>`
+              )
+              .join("")}
           </ul>
           <h2>Education</h2>
           <ul>
-            ${education.map(e => `<li>${e.degree} at ${e.institution}</li>`).join('')}
+            ${education
+              .map((e) => `<li>${e.degree} at ${e.institution}</li>`)
+              .join("")}
           </ul>
           <h2>Experience</h2>
           <ul>
-            ${experience.map(ex => `<li>${ex.position} at ${ex.company}</li>`).join('')}
+            ${experience
+              .map((ex) => `<li>${ex.position} at ${ex.company}</li>`)
+              .join("")}
           </ul>
         </body>
       </html>
@@ -225,7 +275,6 @@ const Dashboard = () => {
     URL.revokeObjectURL(url);
   };
 
-  // ✅ Export as PDF
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
@@ -262,7 +311,14 @@ const Dashboard = () => {
     doc.save("portfolio.pdf");
   };
 
-  if (loading) return <div className="loading-container"><p>Loading Dashboard...</p></div>;
+  if (!user) {
+    // PrivateRoute should prevent this, but render a safe fallback
+    return <div className="loading-container"><p>Loading Dashboard...</p></div>;
+  }
+
+  if (loading) {
+    return <div className="loading-container"><p>Loading Dashboard...</p></div>;
+  }
 
   return (
     <div className="dashboard-container">
@@ -278,13 +334,15 @@ const Dashboard = () => {
           <div className="user-info">
             <div className="user-avatar"><i className="fas fa-user-circle"></i></div>
             <div className="user-details">
-              <h3>Welcome back, {user.name}!</h3>
+              <h3>
+                Welcome back, {user.displayName || profileData.fullName || user.email}!
+              </h3>
               <p>Portfolio Dashboard</p>
             </div>
           </div>
         </div>
         <div className="header-right">
-          <button className="preview-btn" onClick={() => setActiveTab('builder')}>
+          <button className="preview-btn" onClick={() => setActiveTab("builder")}>
             <i className="fas fa-eye"></i> Preview Portfolio
           </button>
           <button onClick={handleLogout} className="logout-btn">
@@ -294,7 +352,7 @@ const Dashboard = () => {
       </div>
 
       <div className="dashboard-layout">
-        <aside className={`dashboard-sidebar ${sidebarCollapsed ? 'collapsed' : ''} ${mobileMenuOpen ? 'active' : ''}`}>
+        <aside className={`dashboard-sidebar ${sidebarCollapsed ? "collapsed" : ""} ${mobileMenuOpen ? "active" : ""}`}>
           <div className="sidebar-header">
             <button className="sidebar-toggle" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
               <i className="fas fa-bars"></i>
@@ -302,8 +360,8 @@ const Dashboard = () => {
             {!sidebarCollapsed && <span>Dashboard Menu</span>}
           </div>
           <nav className="sidebar-nav">
-            {['profile','builder','projects','education','experience','settings','export'].map(tab => (
-              <button key={tab} className={`nav-item ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>
+            {["profile", "builder", "projects", "education", "experience", "settings", "export"].map((tab) => (
+              <button key={tab} className={`nav-item ${activeTab === tab ? "active" : ""}`} onClick={() => setActiveTab(tab)}>
                 <i className="fas fa-chevron-right"></i> {tab}
               </button>
             ))}
@@ -311,51 +369,79 @@ const Dashboard = () => {
         </aside>
 
         <main className="dashboard-main">
-          {activeTab === 'profile' && (
+          {activeTab === "profile" && (
             <form onSubmit={handleProfileSubmit} className="profile-form">
               <input type="text" value={profileData.fullName} onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })} placeholder="Full name" />
               <input type="email" value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} placeholder="Email" />
               <textarea value={profileData.bio} onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })} placeholder="Bio" />
-              <button type="submit" disabled={saveLoading}>{saveLoading ? 'Saving...' : 'Save Profile'}</button>
+              <div className="skills">
+                <input type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} placeholder="Add a skill" />
+                <button type="button" onClick={addSkill}>Add Skill</button>
+                <ul>
+                  {(profileData.skills || []).map((s) => (
+                    <li key={s}>
+                      {s} <button type="button" onClick={() => removeSkill(s)}>x</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <button type="submit" disabled={saveLoading}>
+                {saveLoading ? "Saving..." : "Save Profile"}
+              </button>
             </form>
           )}
 
-          {activeTab === 'projects' && (
+          {activeTab === "projects" && (
             <div>
               <input type="text" value={newProject.title} onChange={(e) => setNewProject({ ...newProject, title: e.target.value })} placeholder="Project Title" />
               <textarea value={newProject.description} onChange={(e) => setNewProject({ ...newProject, description: e.target.value })} placeholder="Description" />
+              <input type="text" value={newProject.technologies} onChange={(e) => setNewProject({ ...newProject, technologies: e.target.value })} placeholder="Technologies (comma separated)" />
               <button onClick={addProject}>Add Project</button>
               <ul>
-                {projects.map(p => <li key={p.id}>{p.title} <button onClick={() => removeProject(p.id)}>Remove</button></li>)}
+                {projects.map((p) => (
+                  <li key={p.id}>
+                    {p.title} <button onClick={() => removeProject(p.id)}>Remove</button>
+                  </li>
+                ))}
               </ul>
             </div>
           )}
 
-          {activeTab === 'education' && (
+          {activeTab === "education" && (
             <div>
               <input type="text" value={newEducation.institution} onChange={(e) => setNewEducation({ ...newEducation, institution: e.target.value })} placeholder="Institution" />
               <input type="text" value={newEducation.degree} onChange={(e) => setNewEducation({ ...newEducation, degree: e.target.value })} placeholder="Degree" />
               <button onClick={addEducation}>Add Education</button>
               <ul>
-                {education.map(e => <li key={e.id}>{e.degree} at {e.institution} <button onClick={() => removeEducation(e.id)}>Remove</button></li>)}
+                {education.map((e) => (
+                  <li key={e.id}>
+                    {e.degree} at {e.institution}{" "}
+                    <button onClick={() => removeEducation(e.id)}>Remove</button>
+                  </li>
+                ))}
               </ul>
             </div>
           )}
 
-          {activeTab === 'experience' && (
+          {activeTab === "experience" && (
             <div>
               <input type="text" value={newExperience.company} onChange={(e) => setNewExperience({ ...newExperience, company: e.target.value })} placeholder="Company" />
               <input type="text" value={newExperience.position} onChange={(e) => setNewExperience({ ...newExperience, position: e.target.value })} placeholder="Position" />
               <button onClick={addExperience}>Add Experience</button>
               <ul>
-                {experience.map(exp => <li key={exp.id}>{exp.position} at {exp.company} <button onClick={() => removeExperience(exp.id)}>Remove</button></li>)}
+                {experience.map((exp) => (
+                  <li key={exp.id}>
+                    {exp.position} at {exp.company}{" "}
+                    <button onClick={() => removeExperience(exp.id)}>Remove</button>
+                  </li>
+                ))}
               </ul>
             </div>
           )}
 
-          {activeTab === 'builder' && <PortfolioBuilder />}
+          {activeTab === "builder" && <PortfolioBuilder />}
 
-          {activeTab === 'export' && (
+          {activeTab === "export" && (
             <div className="export-section">
               <h2>Export Your Portfolio</h2>
               <button onClick={exportJSON}>Download JSON</button>
