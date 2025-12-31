@@ -1,3 +1,4 @@
+// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -9,19 +10,24 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
-import Demo from "./components/Demo.jsx";        // Demo page
-import LearnMore from "./components/LearnMore";  // Learn More page
-import About from "./components/About";          // About page
-import TermsOfUse from "./components/TermsOfUse"; // ✅ Terms of Use page
-import PrivacyPolicy from "./components/PrivacyPolicy"; // ✅ Privacy Policy page
-import ScrollToTop from "./components/ScrollToTop"; // ✅ ScrollToTop component
+import PortfolioBuilder from "./components/PortfolioBuilder";
+import PortfolioPreviewPage from "./components/PortfolioPreviewPage";
+import Demo from "./components/Demo.jsx";
+import LearnMore from "./components/LearnMore";
+import About from "./components/About";
+import TermsOfUse from "./components/TermsOfUse";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import ScrollToTop from "./components/ScrollToTop";
+import PrivateRoute from "./components/PrivateRoute";
+import Logout from "./components/Logout";
 
 import "./App.css";
+import "./styles/PortfolioPreview.scss"; // 👈 ADDED: Global import for PDF export styles
 
 function App() {
   return (
     <Router>
-      <ScrollToTop /> {/* ✅ ensures every page loads at the top */}
+      <ScrollToTop />
       <div className="App">
         <Routes>
           {/* Public routes */}
@@ -32,17 +38,39 @@ function App() {
           <Route path="/demo" element={<Demo />} />
           <Route path="/learn-more" element={<LearnMore />} />
           <Route path="/about" element={<About />} />
-          <Route path="/terms" element={<TermsOfUse />} />       {/* ✅ wired */}
-          <Route path="/privacy" element={<PrivacyPolicy />} />  {/* ✅ wired */}
+          <Route path="/terms" element={<TermsOfUse />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/logout" element={<Logout />} />
 
           {/* Auth routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* User Dashboard routes */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/builder" element={<Dashboard />} />
-          <Route path="/preview" element={<Dashboard />} />
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/builder"
+            element={
+              <PrivateRoute>
+                <PortfolioBuilder />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/preview"
+            element={
+              <PrivateRoute>
+                <PortfolioPreviewPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>
