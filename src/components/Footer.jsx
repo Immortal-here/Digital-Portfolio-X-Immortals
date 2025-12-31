@@ -16,23 +16,14 @@ const Footer = () => {
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4 mt-4 text-center text-md-start">
           {/* Social Links */}
           <div className="mb-3 mb-md-0">
-            <a href="https://facebook.com" className="text-dark me-3">
+            <a href="https://www.facebook.com/share/14VsekJn18J/" className="text-dark me-3">
               <i className="fab fa-facebook"></i>
             </a>
-            <a href="https://youtube.com" className="text-dark me-3">
-              <i className="fab fa-youtube"></i>
-            </a>
-            <a href="https://instagram.com" className="text-dark me-3">
+            <a href="https://www.instagram.com/digipratibha_25?igsh=azlsYjd3cjYxeGRk" className="text-dark me-3">
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://pinterest.com" className="text-dark me-3">
+            <a href="https://pin.it/2BV58L42g" className="text-dark me-3">
               <i className="fab fa-pinterest"></i>
-            </a>
-            <a href="https://twitter.com" className="text-dark me-3">
-              <i className="fab fa-twitter"></i>
-            </a>
-            <a href="https://linkedin.com" className="text-dark">
-              <i className="fab fa-linkedin"></i>
             </a>
           </div>
 
