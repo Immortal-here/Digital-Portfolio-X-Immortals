@@ -1,11 +1,22 @@
+// src/components/Home.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Navigation from './Navigation';
 import Footer from './Footer';
 import '../styles/Home.scss';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/signup');
+    }
+  };
 
   return (
     <div className="home-container">
@@ -13,48 +24,47 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="container">
-          <div className="row align-items-center min-vh-100">
-            <div className="col-lg-6 col-md-8">
-              <div className="hero-content">
-                <h1 className="hero-title">
-                  Create your <span className="text-gradient">Stunning Portfolios</span> in Seconds
-                </h1>
+        <div className="hero-content-wrapper">
+          <div className="hero-text">
+            <h1 className="hero-title">
+              Create your <span className="text-gradient">Stunning Portfolios</span> in Seconds
+            </h1>
 
-                <ul className="hero-features">
-                  <li>Unleash your creative potential with DigiPratibha</li>
-                  <li>Showcase your Professional Portfolio's online to not only create impact but to achieve Success </li>
-                  <li>Perfect for Students, Buisness Professionals, Artists, Photographers and Creatives</li>
-                </ul>
+            <ul className="hero-features">
+              <li>
+                <i className="fas fa-check-circle"></i>
+                <span>Unleash your creative potential with DigiPratibha</span>
+              </li>
+              <li>
+                <i className="fas fa-check-circle"></i>
+                <span>Showcase your Professional Portfolio's online to not only create impact but to achieve Success</span>
+              </li>
+              <li>
+                <i className="fas fa-check-circle"></i>
+                <span>Perfect for Students, Buisness Professionals, Artists, Freelancers</span>
+              </li>
+            </ul>
 
-                <div className="hero-actions">
-                  {/* ✅ Button navigates to login */}
-                  <button className="btn-primary" onClick={() => navigate('/login')}>
-                    Get Started
-                  </button>
-                  
-                  {/* ✅ Button navigates to demo */}
-                  <button className="btn-secondary" onClick={() => navigate('/demo')}>
-                    Watch Demo
-                  </button>
-                </div>
+            <div className="hero-actions">
+  <button className="btn-primary" onClick={handleGetStarted}>
+    GET STARTED
+  </button>
+  <button className="btn-secondary" onClick={() => navigate('/demo')}>
+    Demo
+  </button>
+</div>
 
-                <p className="hero-note">
-                  Start your professional portfolio creating journey with DigiPratibha
-                </p>
-              </div>
-            </div>
 
-            <div className="col-lg-6">
-              <div className="hero-image">
-                <img 
-                  src="/Images/code.jpg" 
-                  alt="Portfolio showcase"
-                  className="img-fluid"
-                />
-                <div className="hero-image-overlay"></div>
-              </div>
-            </div>
+            <p className="hero-note">
+              Start your professional portfolio creating journey with DigiPratibha
+            </p>
+          </div>
+
+          <div className="hero-image">
+            <img 
+              src="/Images/code.jpg" 
+              alt="Portfolio showcase"
+            />
           </div>
         </div>
       </section>
@@ -100,7 +110,6 @@ const Home = () => {
               <div className="process-content">
                 <h2 className="process-title">How to make your Professional Portfolio</h2>
                 <div className="process-actions">
-                  {/* ✅ Button navigates to Learn More page */}
                   <button className="btn-outline" onClick={() => navigate('/learn-more')}>
                     Learn more →
                   </button>
@@ -112,10 +121,10 @@ const Home = () => {
               <div className="process-steps">
                 {[
                   'Choose from a wide selection of templates.',
-                  'Upload images of your work and organize them into projects.',
-                  'Customize your site to perfection with zero code needed.',
+                  'Upload Your Work & Organize Projects.',
+                  'Customize your portfolio to perfection with zero code needed.',
                   'Select a domain name, connect and publish.',
-                  'Promote your online portfolio with a suite of in-house marketing tools.'
+                  'Promote Your Online presence with our EXPORT feature.'
                 ].map((step, index) => (
                   <div key={index} className="process-step">
                     <span className="step-number">{index + 1}</span>
@@ -141,8 +150,8 @@ const Home = () => {
                 {[
                   {
                     id: 'One',
-                    question: 'What is a portfolio website?',
-                    answer: 'A portfolio website is a digital showcase of your work, skills, and achievements.',
+                    question: 'What is a online portfolio?',
+                    answer: 'A online portfolio is a digital showcase of your work, skills, and achievements.',
                     show: true
                   },
                   {
