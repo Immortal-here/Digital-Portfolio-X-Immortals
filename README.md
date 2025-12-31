@@ -5,13 +5,13 @@ DigiPratibha — Digital Student Portfolio Platform
 
 Authors:
 
-Fenny Patel
+Samina Bilakhia(Team Leader )
 
-Aryan Patel
+Fenny Patel (Frontend Developer)
 
-Vismaya Babu
+Aryan Patel(Backend Developer)
 
-Samina Bilakhia
+Vismaya Babu (UI/UX Developer)
 
 Program: B.Tech Computer Science & Engineering
 Institute: AMTICS, Uka Tarsadia University
@@ -23,7 +23,6 @@ DigiPratibha is a modern digital student portfolio platform designed to showcase
 
 The platform enables students to build an online identity beyond resumes, helping them present their capabilities effectively for academics, internships, placements, and personal branding.
 
-This project demonstrates practical knowledge of web development, UI/UX principles, structured data handling, and real-world application design, making it ideal for academic evaluation and portfolio showcase.
 
 ⭐ Key Features
 
@@ -44,10 +43,6 @@ This project demonstrates practical knowledge of web development, UI/UX principl
 Create a centralized digital platform for student portfolios
 
 Replace static resumes with dynamic, shareable profiles
-
-Apply frontend and backend development concepts
-
-Practice structured data organization and UI/UX design
 
 Help students build a strong professional identity early
 
