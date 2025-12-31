@@ -68,7 +68,7 @@ const PrivacyPolicy = () => {
             <p>
               You can access, correct, or delete your personal data. For
               requests, contact:{" "}
-              <a href="mailto:support@digipratibha.com">support@digipratibha.com</a>
+              <a href="mailto:digipratibhaofficial@gmail.com">digipratibhaofficial@gmail.com</a>
             </p>
           </div>
         </div>
