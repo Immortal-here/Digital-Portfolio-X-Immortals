@@ -374,10 +374,12 @@ const PortfolioPreview = ({
                 <div className="form-group">
                   <textarea placeholder="Your Message" rows="4"></textarea>
                 </div>
-                <button type="submit" className="submit-btn">
-                  <i className="fas fa-paper-plane"></i>
-                  Send Message
-                </button>
+                <button type="submit" className="submit-btn stylish">
+                <span className="btn-icon" aria-hidden="true">
+                <i className="fas fa-paper-plane"></i>
+               </span>
+              <span className="btn-text">Send Message</span>
+              </button>
               </form>
             </div>
           </div>
