@@ -1,113 +1,70 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { signInWithPopup, signOut } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
-import '../styles/Navigation.scss';
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import "../styles/Navigation.scss";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
-
-  const handleLogin = async () => {
-    try {
-      const res = await signInWithPopup(auth, googleProvider);
-      setUser(res.user);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const isActive = (p) => location.pathname === p;
 
   const handleLogout = async () => {
-    await signOut(auth);
-    setUser(null);
+    try {
+      await logout();
+      navigate("/login", { replace: true });
+    } catch (e) {
+      console.error("Logout failed:", e);
+    }
   };
 
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* Logo + Brand Name */}
-        <Link to="/" className="nav-logo">
-          <img 
-            src="/digipratibha_favicon_64.ico" 
-            alt="DigiPratibha Logo" 
-            className="logo-image" 
-          />
+        <Link to="/" className="nav-logo" onClick={() => setIsMenuOpen(false)}>
+          <img src="/digipratibha_favicon_64.ico" alt="DigiPratibha" className="logo-image" />
           <span className="logo-text">DigiPratibha</span>
         </Link>
-        
-        <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <Link 
-            to="/" 
-            className={`nav-link ${isActive('/') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <i className="fas fa-home"></i>
-            Home
+
+        <div className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
+          <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>
+            <i className="fas fa-home"></i> Home
           </Link>
-          <Link 
-            to="/templates" 
-            className={`nav-link ${isActive('/templates') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <i className="fas fa-th-large"></i>
-            Templates
+          <Link to="/templates" className={`nav-link ${isActive("/templates") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>
+            <i className="fas fa-th-large"></i> Templates
           </Link>
-          <Link 
-            to="/builder" 
-            className={`nav-link ${isActive('/builder') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <i className="fas fa-tools"></i>
-            Builder
+          <Link to="/builder" className={`nav-link ${isActive("/builder") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>
+            <i className="fas fa-tools"></i> Builder
           </Link>
-          <Link 
-            to="/faq" 
-            className={`nav-link ${isActive('/faq') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <i className="fas fa-question-circle"></i>
-            FAQ
+          <Link to="/faq" className={`nav-link ${isActive("/faq") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>
+            <i className="fas fa-question-circle"></i> FAQ
           </Link>
-          <Link 
-            to="/contact" 
-            className={`nav-link ${isActive('/contact') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <i className="fas fa-envelope"></i>
-            Contact
+          <Link to="/contact" className={`nav-link ${isActive("/contact") ? "active" : ""}`} onClick={() => setIsMenuOpen(false)}>
+            <i className="fas fa-envelope"></i> Contact
           </Link>
 
           {user ? (
-            <div className="flex items-center space-x-4 nav-link">
-              <span>{user.displayName}</span>
-              <button 
-                onClick={handleLogout} 
-                className="bg-red-500 px-3 py-1 rounded text-white"
-              >
+            <div className="nav-user-section">
+              <span className="user-greeting">👋 {user.displayName || user.email}</span>
+              <button onClick={handleLogout} className="logout-btn">
                 Logout
               </button>
             </div>
           ) : (
-            <button 
-              onClick={handleLogin} 
-              className="bg-purple-600 px-3 py-1 rounded text-white nav-link"
-            >
-              <i className="fas fa-sign-in-alt"></i>
-              Login with Google
-            </button>
+            <div className="nav-auth-buttons">
+              <Link to="/login" className="auth-btn login-btn" onClick={() => setIsMenuOpen(false)}>
+                Login
+              </Link>
+              <Link to="/signup" className="auth-btn signup-btn" onClick={() => setIsMenuOpen(false)}>
+                Sign Up
+              </Link>
+            </div>
           )}
         </div>
 
-        <div className="nav-toggle" onClick={toggleMenu}>
+        <div className={`nav-toggle ${isMenuOpen ? "active" : ""}`} onClick={() => setIsMenuOpen((v) => !v)}>
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
