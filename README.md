@@ -72,12 +72,3 @@ AI content assistant
 Vernacular support
 
 Digilocker integration
-
-Portfolio sharing via public links
-
-Admin approval & moderation
-
-
-🌱 Conclusion
-
-DigiPratibha empowers students to present their talents professionally in the digital era. The project reflects practical implementation of web technologies, collaborative development, and a problem-solving approach — making it a strong academic and portfolio-worthy project.
