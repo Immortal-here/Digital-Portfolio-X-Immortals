@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
-import "../styles/LearnMore.scss"; // create this file
+import "../styles/LearnMore.scss";
 
 const LearnMore = () => {
   const navigate = useNavigate();
@@ -10,67 +10,44 @@ const LearnMore = () => {
   const steps = [
     {
       number: 1,
-      title: "Choose from a wide selection of templates",
-      summary:
-        "Pick a professionally designed template that matches your style and industry — from minimal developer layouts to visual-heavy photographer templates.",
-      details: [
-        "How to choose: evaluate layout (single page vs multi-page), typography, portfolio gallery styles and built-in sections.",
-        "Tip: pick a template that showcases the type of work you want to land (e.g., case-study forward for product design vs image-forward for photography).",
-        "Checklist:",
-        ["Layout fits your content", "Readable typography", "Good mobile responsiveness", "Gallery or project template available"],
-      ],
+      title: "Choose from a Wide Selection of Templates",
+      description: `Browse our library of modern, responsive templates tailored to different 
+      professions — from developers and designers to photographers and business professionals. 
+      Each template is customizable, so you can start with a strong foundation that matches your style.`,
     },
-
     {
       number: 2,
-      title: "Upload and organize your work",
-      summary:
-        "Add your projects, images, screenshots and links. Organize them into categories or case studies for easy browsing.",
-      details: [
-        "Best practices for assets: use high-quality but optimized images, include descriptive captions and link to live demos or repos.",
-        "Organizing: group by project type (Client work / Personal / School), or by medium (Illustration / Web / Photo).",
-        "Checklist:",
-        ["Compress images to web-friendly sizes", "Add short descriptions and tech stack", "Tag projects with categories"],
-      ],
+      title: "Upload Your Work & Organize Projects",
+      description: `Easily upload images, documents, videos, or links to your projects. 
+      Group them by category (e.g., design, coding, writing) so employers and clients 
+      can quickly find what matters most.`,
     },
-
     {
       number: 3,
-      title: "Customize your site with zero code",
-      summary:
-        "Add your name, professional title, About section, Skills, Education, Experience and Testimonials with the visual editor—no coding required.",
-      details: [
-        "What to customize: hero headline, profile picture, contact links, sections order and color accents.",
-        "UX tip: keep the hero clear — name, role, one-line pitch and call-to-action (contact / view work).",
-        "Checklist:",
-        ["Clear headline", "Concise About paragraph", "Prominent CTA (contact/download CV)", "Accessible color contrast"],
-      ],
+      title: "Customize Without Any Code",
+      description: `Personalize your portfolio with your bio, education, skills, and achievements. 
+      Our drag-and-drop editor ensures you can arrange sections, tweak colors, 
+      and adjust layouts — all without needing technical skills.`,
     },
-
     {
       number: 4,
-      title: "Select a domain, connect and publish",
-      summary:
-        "Choose a custom domain (or use a subdomain) and publish with one click. DNS and SSL will be handled by the platform.",
-      details: [
-        "Options: use yourname.com for professionalism or a free subdomain for testing.",
-        "Publishing tips: check your meta title/description for SEO and set up analytics before going live.",
-        "Checklist:",
-        ["Choose domain name", "Connect DNS or use platform domain", "Enable SSL (HTTPS)", "Add Google Analytics or tracking"],
-      ],
+      title: "Get Your Own Domain",
+      description: `Publish instantly on a DigiPratibha subdomain, or connect your own 
+      custom domain to look even more professional. Secure hosting ensures your portfolio 
+      is available worldwide 24/7.`,
     },
-
     {
       number: 5,
-      title: "Promote your portfolio and grow",
-      summary:
-        "Share your portfolio on LinkedIn, GitHub, Dribbble and in job applications. Use SEO basics and social previews to increase discoverability.",
-      details: [
-        "Promotion ideas: share project walkthrough posts, include portfolio link in email signatures and social bios.",
-        "Growth: periodically update with new projects and track visits to see what attracts attention.",
-        "Checklist:",
-        ["Add Open Graph image & description", "Share projects on social platforms", "Collect testimonials & case study metrics"],
-      ],
+      title: "Promote Your Work with Built-in Tools",
+      description: `Reach more people by sharing your portfolio across social media. 
+      Our platform also supports SEO-friendly designs so your work can be discovered on Google. 
+      Advanced analytics help you track views and engagement.`,
+    },
+    {
+      number: 6,
+      title: "Keep Growing & Updating",
+      description: `Your portfolio evolves with you. Update your projects, add testimonials, 
+      or showcase new achievements anytime — ensuring you always put your best foot forward.`,
     },
   ];
 
@@ -78,116 +55,77 @@ const LearnMore = () => {
     <div className="learnmore-page">
       <Navigation />
 
-      {/* Hero */}
+      {/* Hero Section */}
       <section
-        className="lm-hero"
+        className="learnmore-hero text-center text-white py-5"
         style={{
           background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
-          color: "white",
         }}
       >
         <div className="container">
-          <h1 className="lm-title">Build a Professional Portfolio — step by step</h1>
-          <p className="lm-subtitle">
-            Follow these practical, actionable steps and tips to create a portfolio that attracts clients and hiring managers.
+          <h1 className="fw-bold mb-3">Learn More About Building Your Portfolio</h1>
+          <p className="lead mx-auto" style={{ maxWidth: "800px" }}>
+            A deeper look into how DigiPratibha helps you craft a professional portfolio 
+            in just a few simple steps.
           </p>
         </div>
       </section>
 
-      {/* Steps */}
-      <section className="lm-steps container">
-        {steps.map((s) => (
-          <article key={s.number} className="lm-step-card">
-            <div className="lm-step-left">
-              <div className="lm-step-number">{s.number}</div>
+      {/* Steps Section */}
+      <section className="learnmore-steps py-5">
+        <div className="container">
+          {steps.map((step) => (
+            <div
+              key={step.number}
+              className="learnmore-step d-flex align-items-start mb-4 p-4 rounded shadow-sm"
+              style={{ background: "#fff" }}
+            >
+              <div
+                className="step-number me-3 d-flex align-items-center justify-content-center fw-bold text-white"
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+                }}
+              >
+                {step.number}
+              </div>
+              <div>
+                <h4 className="fw-semibold">{step.title}</h4>
+                <p className="text-muted mb-0">{step.description}</p>
+              </div>
             </div>
-
-            <div className="lm-step-right">
-              <h3 className="lm-step-title">{s.title}</h3>
-              <p className="lm-step-summary">{s.summary}</p>
-
-              {/* details list: may contain strings or an array (checklist) */}
-              {s.details.map((d, i) =>
-                Array.isArray(d) ? (
-                  <ul key={i} className="lm-checklist">
-                    {d.map((li, idx) => (
-                      <li key={idx}>{li}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p key={i} className="lm-step-detail">
-                    {d}
-                  </p>
-                )
-              )}
-            </div>
-          </article>
-        ))}
-      </section>
-
-      {/* Extras: SEO, Images, Accessibility, Publish & Promote */}
-      <section className="lm-extras container">
-        <div className="lm-extra">
-          <h3>Optimize your images & performance</h3>
-          <p>
-            Resize images for web (max width 1600px for hero/project images), use modern formats (WebP where possible), lazy-load gallery images, and add descriptive alt text for accessibility and SEO.
-          </p>
-          <ul>
-            <li>Compress images (tinyjpg, ImageOptim)</li>
-            <li>Use descriptive filenames and ALT text</li>
-            <li>Lazy-load non-critical images</li>
-          </ul>
-        </div>
-
-        <div className="lm-extra">
-          <h3>SEO & analytics</h3>
-          <p>
-            Configure meta title/description for each page, set Open Graph tags for social sharing, and connect Google Analytics or simple visit tracking to learn which projects perform best.
-          </p>
-          <ul>
-            <li>Set meaningful page titles</li>
-            <li>Add structured data for projects if available</li>
-            <li>Track traffic sources and optimize top-performing pages</li>
-          </ul>
-        </div>
-
-        <div className="lm-extra">
-          <h3>Accessibility & responsiveness</h3>
-          <p>
-            Ensure color contrast, keyboard navigability, and responsive layouts. Test on mobile and low-bandwidth connections.
-          </p>
-          <ul>
-            <li>Use accessible headings and labels</li>
-            <li>Test with screen readers and keyboard-only navigation</li>
-            <li>Make font sizes legible on small screens</li>
-          </ul>
-        </div>
-
-        <div className="lm-extra">
-          <h3>Publishing & domains</h3>
-          <p>
-            Choose a memorable domain, configure redirect from old URLs, and ensure SSL is enabled. Consider connecting analytics and a simple contact form before launch.
-          </p>
-        </div>
-
-        <div className="lm-extra">
-          <h3>Promote & maintain</h3>
-          <p>
-            Share new projects on social media, update your portfolio quarterly, ask for testimonials, and use the portfolio as a living document for your career.
-          </p>
+          ))}
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="lm-cta container">
-        <div className="cta-row">
-          <button className="btn-primary" onClick={() => navigate("/login")}>
-            Get Started
-          </button>
+      {/* CTA Section */}
+      <section
+        className="learnmore-cta text-center text-white py-5"
+        style={{
+          background: "linear-gradient(135deg, #2575fc 0%, #6a11cb 100%)",
+        }}
+      >
+        <div className="container">
+          <h2 className="fw-bold mb-3">Ready to Build Your Portfolio?</h2>
+          <p className="lead mb-4">
+            Join thousands of creators and professionals already showcasing their work with DigiPratibha.
+          </p>
+          {/* White Get Started Button */}
+          <a href="/signup" className="btn-gradient-white">
+            Get Started →
+          </a>
 
-          <button className="btn-back-home" onClick={() => navigate("/")}>
-            ← Back to Home
-          </button>
+          {/* Back to Home Button */}
+          <div className="mt-4">
+            <button
+              className="btn-back-home"
+              onClick={() => navigate("/")}
+            >
+              ← Back to Home
+            </button>
+          </div>
         </div>
       </section>
 
